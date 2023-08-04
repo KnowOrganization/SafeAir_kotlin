@@ -20,7 +20,7 @@
         android:label="fragment_signin"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_signinFragment_to_shareLocFragment"
+            android:id="@+id/goToShareLoc"
             app:destination="@id/shareLocFragment" />
     </fragment>
     <fragment

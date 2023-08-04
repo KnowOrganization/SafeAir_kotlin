@@ -6,4 +6,8 @@
     <string name="login">LOGIN</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="lng">Lng :</string>
+    <string name="lat">Lat :</string>
 </resources>
