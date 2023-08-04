@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "882266510112",
+    "firebase_url": "https://safeair-b0c14-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "safeair-b0c14",
+    "storage_bucket": "safeair-b0c14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882266510112:android:9e36a9239af1459906bd45",
+        "android_client_info": {
+          "package_name": "com.example.safeair_native_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882266510112-sot7t3bekmvsc78vc97jiig8p5s3imkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.safeair_native_app",
+            "certificate_hash": "030fdc023b74da3bac3bd81288d2967e5bc18361"
+          }
+        },
+        {
+          "client_id": "882266510112-e6do3qspb3hg0jthh01ukegtedmk4nsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBrOl_zpx_Y18k8JtSAnrfZ04IIHlNt9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882266510112-bcag47f464nvuitormri6tlui5tkvsrd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "882266510112-tfqnfht3hj4tr01bo44vonv04426iikd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.knoworganization.SafeAir"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882266510112:android:446ed43de508e6d306bd45",
+        "android_client_info": {
+          "package_name": "com.knoworganization.safeair_kotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882266510112-e6do3qspb3hg0jthh01ukegtedmk4nsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBrOl_zpx_Y18k8JtSAnrfZ04IIHlNt9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882266510112-bcag47f464nvuitormri6tlui5tkvsrd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "882266510112-tfqnfht3hj4tr01bo44vonv04426iikd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.knoworganization.SafeAir"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882266510112:android:c55bba5a87be061806bd45",
+        "android_client_info": {
+          "package_name": "com.rn_safeair_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882266510112-tdrh46mva68gt43rtvipb38p4s16oikt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rn_safeair_app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "882266510112-e6do3qspb3hg0jthh01ukegtedmk4nsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBrOl_zpx_Y18k8JtSAnrfZ04IIHlNt9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882266510112-bcag47f464nvuitormri6tlui5tkvsrd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "882266510112-tfqnfht3hj4tr01bo44vonv04426iikd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.knoworganization.SafeAir"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
