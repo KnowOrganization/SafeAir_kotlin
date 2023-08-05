@@ -1,5 +1,6 @@
 package com.knoworganization.safeair_kotlin
 
+import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
@@ -10,8 +11,6 @@ import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +20,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 class LocationService: Service() {
@@ -56,6 +57,10 @@ class LocationService: Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+
+
+
+    @SuppressLint("SimpleDateFormat")
     private fun start(){
         val notification = NotificationCompat.Builder(this,"location")
             .setContentTitle("Tracking Location")
@@ -81,19 +86,26 @@ class LocationService: Service() {
                 )
                 if (currentUser != null){
                     val email = currentUser.email.toString()
-                    val data = LocationData(email, lat, lng, "online", "23123")
-//                    Log.d("email", "Got email: ${currentUser.email.toString()}")
+                    val formatter = SimpleDateFormat("dd-MMM-yyyy HH:mm:ss")
+                    val date = Date()
+                    val current = formatter.format(date)
+                    val data = LocationData(email, lat, lng, "online", current)
                     myRef.child("locations").child(currentUser.uid).setValue(data)
                 }
                 notificationManager.notify(1, updatedNotification.build())
             }
             .launchIn(serviceScope)
-
         startForeground(1, notification.build())
     }
+    @SuppressLint("SimpleDateFormat")
     private fun stop(){
         stopForeground(STOP_FOREGROUND_DETACH)
         stopSelf()
+        val currentUser = auth.currentUser
+        if (currentUser != null){
+            val data: String = "offline"
+            myRef.child("locations").child(currentUser.uid).child("status").setValue(data)
+        }
     }
 
     override fun onDestroy() {
