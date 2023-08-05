@@ -45,13 +45,18 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
-    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 //    Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.6.0")
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
 //    Location service
-    implementation ("com.google.android. gms:play-services-location:20.0.0")
+    implementation(libs.eventbus)
+    implementation (libs.play.services.location)
+//    Realtime database Firebase
+    implementation(libs.firebase.database.ktx)
+//    Firebase Auth
+    implementation(libs.firebase.auth.ktx)
+
 }

@@ -33,8 +33,8 @@ class LoginFragment : Fragment() {
     private var param2: String? = null
     private lateinit var auth: FirebaseAuth;
 
-    lateinit var email: String
-    lateinit var password: String
+    private lateinit var email: String
+    private lateinit var password: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
