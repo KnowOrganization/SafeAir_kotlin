@@ -1,7 +1,6 @@
 package com.knoworganization.safeair_kotlin
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.service.controls.ControlsProviderService.TAG
 import android.util.Log
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,7 +29,7 @@ class LoginFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var auth: FirebaseAuth;
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var email: String
     private lateinit var password: String
@@ -64,23 +62,20 @@ class LoginFragment : Fragment() {
             }
         }
 
-        view.findViewById<Button>(R.id.loginBtn).setOnClickListener(View.OnClickListener {
+        view.findViewById<Button>(R.id.loginBtn).setOnClickListener {
             auth.signInWithEmailAndPassword("sami@email.com", "sami1234")
                 .addOnCompleteListener() { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
                         findNavController().navigate(R.id.goToShareLoc)
-                        Log.d(TAG, "signInWithEmail:success")
+                        Log.d("signin", "signInWithEmail:success")
 
                     } else {
                         // If sign in fails, display a message to the user.
                     }
                 }
-        })
-
-
-
+        }
         return view
     }
 
