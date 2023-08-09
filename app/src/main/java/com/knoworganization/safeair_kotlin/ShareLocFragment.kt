@@ -1,16 +1,25 @@
 package com.knoworganization.safeair_kotlin
 
+import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.play.core.integrity.b
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.prefs.Preferences
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,7 +34,10 @@ private const val ARG_PARAM2 = "param2"
 class ShareLocFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var auth: FirebaseAuth;
+    private lateinit var auth: FirebaseAuth
+    private var isStart: Boolean = false
+    private val database = Firebase.database("https://safeair-b0c14-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    private val myRef = database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +47,7 @@ class ShareLocFragment : Fragment() {
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,25 +58,47 @@ class ShareLocFragment : Fragment() {
         auth = Firebase.auth
         val currentUser = auth.currentUser
 
-
-
         view.findViewById<Button>(R.id.start).setOnClickListener(View.OnClickListener {
             Intent(requireActivity().applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 activity?.startService(this)
             }
+            isStart = true
+            view.findViewById<Button>(R.id.start).isEnabled = false
+            view.findViewById<Button>(R.id.stop).isEnabled = true
         })
 
         view.findViewById<Button>(R.id.stop).setOnClickListener(View.OnClickListener {
             Intent(requireActivity().applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_STOP
-                activity?.startService(this)
+                activity?.stopService(this)
             }
+            if (currentUser != null) {
+                val data: String = "offline"
+                myRef.child("locations").child(currentUser.uid).child("status").setValue(data)
+            }
+            isStart = false
+            view.findViewById<Button>(R.id.start).isEnabled = true
+            view.findViewById<Button>(R.id.stop).isEnabled = false
+
         })
 
+        if (isStart){
+            view.findViewById<Button>(R.id.start).isEnabled = false
+            view.findViewById<Button>(R.id.stop).isEnabled = true
+        }else{
+            view.findViewById<Button>(R.id.start).isEnabled = true
+            view.findViewById<Button>(R.id.stop).isEnabled = false
+        }
+
         view.findViewById<Button>(R.id.logout).setOnClickListener(View.OnClickListener {
-            Firebase.auth.signOut()
-            findNavController().popBackStack()
+            if (isStart){
+                val toast = Toast.makeText(requireActivity().applicationContext, "Stop the Location first", Toast.LENGTH_SHORT)
+                toast.show()
+            }else{
+                Firebase.auth.signOut()
+                findNavController().popBackStack()
+            }
         })
 
         return view

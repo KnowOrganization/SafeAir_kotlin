@@ -58,5 +58,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
 //    Firebase Auth
     implementation(libs.firebase.auth.ktx)
+//    Chaching
+    implementation (libs.gson)
 
 }
