@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.io.File
 import java.util.prefs.Preferences
 
 
@@ -58,11 +59,18 @@ class ShareLocFragment : Fragment() {
         auth = Firebase.auth
         val currentUser = auth.currentUser
 
+        val cacheDir = context?.cacheDir
+        val file = File(cacheDir, "true")
+        file.forEachLine {
+            isStart = it == "true"
+        }
+
         view.findViewById<Button>(R.id.start).setOnClickListener(View.OnClickListener {
             Intent(requireActivity().applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 activity?.startService(this)
             }
+            file.writeText("true")
             isStart = true
             view.findViewById<Button>(R.id.start).isEnabled = false
             view.findViewById<Button>(R.id.stop).isEnabled = true
@@ -77,6 +85,7 @@ class ShareLocFragment : Fragment() {
                 val data: String = "offline"
                 myRef.child("locations").child(currentUser.uid).child("status").setValue(data)
             }
+            file.writeText("false")
             isStart = false
             view.findViewById<Button>(R.id.start).isEnabled = true
             view.findViewById<Button>(R.id.stop).isEnabled = false
