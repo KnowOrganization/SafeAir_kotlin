@@ -61,8 +61,13 @@ class ShareLocFragment : Fragment() {
 
         val cacheDir = context?.cacheDir
         val file = File(cacheDir, "true")
-        file.forEachLine {
-            isStart = it == "true"
+        try {
+            file.forEachLine {
+                if (it == "true"){
+                    isStart = true
+                }
+            }
+        }catch (_: Exception){
         }
 
         view.findViewById<Button>(R.id.start).setOnClickListener(View.OnClickListener {
