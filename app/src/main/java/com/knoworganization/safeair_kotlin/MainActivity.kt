@@ -1,10 +1,15 @@
 package com.knoworganization.safeair_kotlin
 
 import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +25,19 @@ class MainActivity : AppCompatActivity() {
                 ),
                 0
             )
+            if (checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Allow permissions to SafeAir")
+                builder.setMessage("Allow Location permission to all the time")
+                builder.setPositiveButton("Yes") { dialog, which ->
+                    val intent: Intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri = Uri.fromParts("package", packageName, null)
+                    intent.setData(uri)
+                    startActivity(intent)
+                }
+                builder.show()
+            }
         }
         else {
             ActivityCompat.requestPermissions(
