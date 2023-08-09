@@ -10,4 +10,8 @@
     <string name="stop">Stop</string>
     <string name="lng">Lng :</string>
     <string name="lat">Lat :</string>
+    <string name="phone">Phone</string>
+    <string name="login_with_email">Login with Email</string>
+    <string name="login_with_phone">Login with phone</string>
+    <string name="otp">OTP</string>
 </resources>
