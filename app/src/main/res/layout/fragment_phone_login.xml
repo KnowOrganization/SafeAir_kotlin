@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFragment">
+    tools:context=".PhoneLoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="160dp"
             android:fontFamily="sans-serif-light"
             android:text="@string/login"
             android:textSize="60sp"
@@ -33,71 +33,45 @@
             android:text="@string/login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneLink" />
+            app:layout_constraintTop_toBottomOf="@+id/emailLink" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            app:errorEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:startIconDrawable="@drawable/alternate_email_48px"
-            app:helperTextTextColor="@android:color/holo_red_light">
-
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="60dp"
-                android:autofillHints="emailAddress"
-                android:ems="10"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordTextInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:id="@+id/phoneTextInputLayout"
             app:errorEnabled="true"
             app:helperTextTextColor="@android:color/holo_red_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
-            app:startIconDrawable="@drawable/password_48px">
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:startIconDrawable="@drawable/call_48px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp">
 
             <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="60dp"
-                android:autofillHints="password"
-                android:ems="10"
-                android:hint="@string/password"
-                android:inputType="textPassword"
+                android:id="@+id/phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="60dp"
+                android:autofillHints="phone"
+                android:ems="10"
+                android:hint="@string/phone"
+                android:inputType="text"
+                tools:ignore="TextFields" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/phoneLink"
+            android:id="@+id/emailLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/login_with_phone"
+            android:text="@string/login_with_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/phoneTextInputLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
