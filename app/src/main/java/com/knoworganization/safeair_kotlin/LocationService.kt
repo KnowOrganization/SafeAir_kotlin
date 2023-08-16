@@ -12,6 +12,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +30,6 @@ class LocationService: Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient
     private lateinit var auth: FirebaseAuth
-
 
     // creating a variable for our
     // Firebase Database.
@@ -68,7 +68,7 @@ class LocationService: Service() {
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setOngoing(true)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val currentUser = auth.currentUser
         var lat: Double
@@ -91,6 +91,7 @@ class LocationService: Service() {
                     val current = formatter.format(date)
                     val data = LocationData(email, lat, lng, "online", current)
                     myRef.child("locations").child(currentUser.uid).setValue(data)
+
                 }
                 notificationManager.notify(1, updatedNotification.build())
             }

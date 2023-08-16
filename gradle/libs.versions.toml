@@ -16,6 +16,7 @@ firebase-auth-ktx = "22.1.1"
 navigation-ui-ktx = "2.6.0"
 play-services-location = "21.0.1"
 firebase-database-ktx = "20.2.2"
+firebase-firestore-ktx = "24.7.0"
 
 [libraries]
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-ui-ktx" }
@@ -35,6 +36,7 @@ firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx",
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services-location" }
 play-services-location-v2000 = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebase-database-ktx" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore-ktx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

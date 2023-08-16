@@ -58,7 +58,9 @@ dependencies {
     implementation(libs.firebase.database.ktx)
 //    Firebase Auth
     implementation(libs.firebase.auth.ktx)
-//    Chaching
+//    Caching
     implementation (libs.gson)
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 
 }
