@@ -17,11 +17,13 @@ navigation-ui-ktx = "2.6.0"
 play-services-location = "21.0.1"
 firebase-database-ktx = "20.2.2"
 firebase-firestore-ktx = "24.7.0"
+retrofit = "2.9.0"
 
 [libraries]
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-ui-ktx" }
 androidx-navigation-safe-args-gradle-plugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation-ui-ktx" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
@@ -37,6 +39,7 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 play-services-location-v2000 = { module = "com.google.android.gms:play-services-location", version.ref = "google-play-services-location" }
 firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebase-database-ktx" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebase-firestore-ktx" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

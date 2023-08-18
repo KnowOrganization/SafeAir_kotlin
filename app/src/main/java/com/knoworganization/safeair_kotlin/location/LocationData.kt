@@ -1,4 +1,4 @@
-package com.knoworganization.safeair_kotlin
+package com.knoworganization.safeair_kotlin.location
 
 data class LocationData(
     var email: String,

@@ -12,7 +12,7 @@
 
 
     <application
-        android:name=".LocationApp"
+        android:name=".location.LocationApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -23,7 +23,7 @@
         android:theme="@style/Theme.SafeAir_kotlin"
         tools:targetApi="31">
         <service
-            android:name=".LocationService"
+            android:name=".location.LocationService"
             android:enabled="true"
             android:foregroundServiceType="location" />
         <activity

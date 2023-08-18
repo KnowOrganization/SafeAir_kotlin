@@ -1,4 +1,4 @@
-package com.knoworganization.safeair_kotlin
+package com.knoworganization.safeair_kotlin.location
 
 import android.annotation.SuppressLint
 import android.content.Context
