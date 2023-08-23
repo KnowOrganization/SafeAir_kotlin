@@ -2,6 +2,7 @@ package com.knoworganization.safeair_kotlin.screens
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,15 +10,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.knoworganization.safeair_kotlin.R
+import com.knoworganization.safeair_kotlin.api.APIInterface
+import com.knoworganization.safeair_kotlin.api.RequestLogInDataModel
+import com.knoworganization.safeair_kotlin.api.RequestLogoutDataModel
+import com.knoworganization.safeair_kotlin.api.ResponseClass
+import com.knoworganization.safeair_kotlin.api.ServiceBuilder
 import com.knoworganization.safeair_kotlin.location.LocationService
+import kotlinx.coroutines.awaitAll
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -30,6 +43,11 @@ class ShareLocFragment : Fragment() {
     private val db = Firebase.firestore
     private lateinit var logInTime: String
     private var count = 0
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var loginLat: String
+    private lateinit var loginLng: String
+    private lateinit var latLngResult: Array<String>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +62,7 @@ class ShareLocFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_share_loc, container, false)
-
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
         auth = Firebase.auth
         val currentUser = auth.currentUser
 
@@ -100,24 +118,41 @@ class ShareLocFragment : Fragment() {
             val currentDate = formatter.format(date)
             val currentTime = timeFormatter.format(date)
             logInTime = currentTime
-            val logInData = hashMapOf(
-                "logInTime" to currentTime,
-                "logOutTime" to null,
-                "email" to currentUser?.email.toString()
-            )
-            if (currentUser != null) {
-                db.collection("Login/${currentUser.email}/sessions/$currentDate/session")
-                    .document(count.toString()).set(logInData)
-//                    .addOnSuccessListener { documentReference ->
-//                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-//                    }
-                    .addOnFailureListener { e ->
-                        Log.w("TAG", "Error adding document", e)
+//            val logInData = hashMapOf(
+//                "logInTime" to currentTime,
+//                "logOutTime" to null,
+//                "email" to currentUser?.email.toString()
+//            )
+//            ============== API POST ====================
+            val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
+            val obj = RequestLogInDataModel(currentDate, currentTime, currentUser?.email.toString(), count, "latLngResult", "latLngResult" )
+            retrofit.requestSendLoginData(obj).enqueue(
+                object:Callback<ResponseClass>{
+                    override fun onResponse(
+                        call: Call<ResponseClass>,
+                        response: Response<ResponseClass>
+                    ) {
+                        Log.v("TAG", response.body()?.message.toString())
                     }
-                myRef.child("LoginData").child(currentUser.uid).child("logInTime").setValue(currentTime)
-                myRef.child("LoginData").child(currentUser.uid).child("email").setValue(currentUser.email.toString())
 
-            }
+                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                        Log.v("TAG", "${t.message}")                    }
+                }
+            )
+//            =======================================
+//            if (currentUser != null) {
+//                db.collection("Login/${currentUser.email}/sessions/$currentDate/session")
+//                    .document(count.toString()).set(logInData)
+////                    .addOnSuccessListener { documentReference ->
+////                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+////                    }
+//                    .addOnFailureListener { e ->
+//                        Log.w("TAG", "Error adding document", e)
+//                    }
+//                myRef.child("LoginData").child(currentUser.uid).child("logInTime").setValue(currentTime)
+//                myRef.child("LoginData").child(currentUser.uid).child("email").setValue(currentUser.email.toString())
+//
+//            }
 //            =============
             file.writeText("true")
             isStart = true
@@ -140,25 +175,41 @@ class ShareLocFragment : Fragment() {
             val date = Date()
             val currentDate = formatter.format(date)
             val currentTime = timeFormatter.format(date)
-            val logOutData = hashMapOf(
-                "logInTime" to logInTime,
-                "logOutTime" to currentTime,
-                "email" to currentUser?.email.toString()
-            )
-            if (currentUser != null) {
-                db.collection("Login/${currentUser.email}/sessions/$currentDate/session")
-                    .document(count.toString()).set(logOutData)
-//                    .addOnSuccessListener { documentReference ->
-//                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-//                    }
-                    .addOnFailureListener { e ->
-                        Log.w("TAG", "Error adding document", e)
+//            val logOutData = hashMapOf(
+//                "logInTime" to logInTime,
+//                "logOutTime" to currentTime,
+//                "email" to currentUser?.email.toString()
+//            )
+//            ============== API POST ====================
+            val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
+            val obj = RequestLogoutDataModel(currentDate, logInTime , currentTime, currentUser?.email.toString(), count, "loginLat", "loginLng", "latLngResult", "latLngResult" )
+            retrofit.requestSendLogoutData(obj).enqueue(
+                object:Callback<ResponseClass>{
+                    override fun onResponse(
+                        call: Call<ResponseClass>,
+                        response: Response<ResponseClass>
+                    ) {
+                        Log.v("TAG", response.body()?.message.toString())
                     }
-                myRef.child("LoginData").child(currentUser.uid).child("logOutTime").setValue(currentTime)
-                count++
-                countFile.writeText("$count")
-            }
-
+                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                        Log.v("TAG", "${t.message}")                    }
+                }
+            )
+//            =======================================
+//            if (currentUser != null) {
+//                db.collection("Login/${currentUser.email}/sessions/$currentDate/session")
+//                    .document(count.toString()).set(logOutData)
+////                    .addOnSuccessListener { documentReference ->
+////                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
+////                    }
+//                    .addOnFailureListener { e ->
+//                        Log.w("TAG", "Error adding document", e)
+//                    }
+//                myRef.child("LoginData").child(currentUser.uid).child("logOutTime").setValue(currentTime)
+//
+//            }
+            count++
+            countFile.writeText("$count")
 //            =================
             file.writeText("false")
             isStart = false
@@ -186,5 +237,38 @@ class ShareLocFragment : Fragment() {
         })
 
         return view
+    }
+
+    private fun getLocation() {
+        var textLatitude:String = ""
+        var textLongitude:String = ""
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity().applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                requireActivity().applicationContext,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
+            )
+            return
+        }
+//      get Latitude and Longitude
+        val location = fusedLocationProviderClient.lastLocation
+        location.addOnSuccessListener {
+            if (it != null) {
+                textLatitude = it.latitude.toString()
+                textLongitude = it.longitude.toString()
+                Log.v("TAG", textLatitude)
+                Log.v("TAG", textLongitude)
+                latLngResult = arrayOf(textLatitude, textLongitude)
+            }
+        }
     }
 }
