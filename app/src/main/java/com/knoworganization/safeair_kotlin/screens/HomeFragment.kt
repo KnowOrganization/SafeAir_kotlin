@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
@@ -55,7 +57,7 @@ class HomeFragment : Fragment() {
         promptInfo= BiometricPrompt.PromptInfo.Builder()
             .setTitle("Continue to login")
             .setSubtitle("scan biometrics...")
-            .setNegativeButtonText("close")
+            .setAllowedAuthenticators(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
             .build()
 
         view.findViewById<Button>(R.id.login).setOnClickListener(View.OnClickListener {
@@ -72,14 +74,16 @@ class HomeFragment : Fragment() {
             }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE ->{
                 Log.d("TAG","App can not authenticate using biometric")
-
+                val lockIntent = Intent(Settings.ACTION_SECURITY_SETTINGS)
+                startActivity(lockIntent)
 
             }
             BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED ->{
                 val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply{
                     putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED, BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                 }
-                Toast.makeText(requireActivity().applicationContext, "No fingerprint enrolled", Toast.LENGTH_SHORT).show()
+                val lockIntent = Intent(Settings.ACTION_SECURITY_SETTINGS)
+                startActivity(lockIntent)
             }
         }
     }
