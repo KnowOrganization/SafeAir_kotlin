@@ -62,5 +62,8 @@ dependencies {
     implementation (libs.gson)
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
-
+//    API calls
+// retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
 }

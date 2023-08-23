@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.knoworganization.safeair_kotlin.HomeFragment"
+        android:name="com.knoworganization.safeair_kotlin.screens.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/signinFragment"
-        android:name="com.knoworganization.safeair_kotlin.LoginFragment"
+        android:name="com.knoworganization.safeair_kotlin.screens.LoginFragment"
         android:label="fragment_signin"
         tools:layout="@layout/fragment_login" >
         <action
@@ -28,12 +28,12 @@
     </fragment>
     <fragment
         android:id="@+id/shareLocFragment"
-        android:name="com.knoworganization.safeair_kotlin.ShareLocFragment"
+        android:name="com.knoworganization.safeair_kotlin.screens.ShareLocFragment"
         android:label="fragment_share_loc"
         tools:layout="@layout/fragment_share_loc" />
     <fragment
         android:id="@+id/phoneLoginFragment"
-        android:name="com.knoworganization.safeair_kotlin.PhoneLoginFragment"
+        android:name="com.knoworganization.safeair_kotlin.screens.PhoneLoginFragment"
         android:label="fragment_phone_login"
         tools:layout="@layout/fragment_phone_login" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/OTPFragment"
-        android:name="com.knoworganization.safeair_kotlin.OTPFragment"
+        android:name="com.knoworganization.safeair_kotlin.screens.OTPFragment"
         android:label="fragment_o_t_p"
         tools:layout="@layout/fragment_o_t_p" >
         <action
