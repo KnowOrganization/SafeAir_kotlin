@@ -71,5 +71,4 @@ dependencies {
     implementation (libs.converter.gson)
 //    Biometric
     implementation (libs.androidx.biometric.ktx)
-
 }
