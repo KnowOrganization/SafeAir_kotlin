@@ -27,7 +27,6 @@ import com.knoworganization.safeair_kotlin.api.RequestLogoutDataModel
 import com.knoworganization.safeair_kotlin.api.ResponseClass
 import com.knoworganization.safeair_kotlin.api.ServiceBuilder
 import com.knoworganization.safeair_kotlin.location.LocationService
-import kotlinx.coroutines.awaitAll
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,7 +46,6 @@ class ShareLocFragment : Fragment() {
     private lateinit var loginLat: String
     private lateinit var loginLng: String
     private lateinit var latLngResult: Array<String>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,36 +122,56 @@ class ShareLocFragment : Fragment() {
 //                "email" to currentUser?.email.toString()
 //            )
 //            ============== API POST ====================
-            val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
-            val obj = RequestLogInDataModel(currentDate, currentTime, currentUser?.email.toString(), count, "latLngResult", "latLngResult" )
-            retrofit.requestSendLoginData(obj).enqueue(
-                object:Callback<ResponseClass>{
-                    override fun onResponse(
-                        call: Call<ResponseClass>,
-                        response: Response<ResponseClass>
-                    ) {
-                        Log.v("TAG", response.body()?.message.toString())
-                    }
+            if (ActivityCompat.checkSelfPermission(
+                    requireActivity().applicationContext,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireActivity().applicationContext,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
+                )
+            }
+//      get Latitude and Longitude
+            val location = fusedLocationProviderClient.lastLocation
+            location.addOnSuccessListener {
+                if (it != null) {
+                    val textLatitude = it.latitude.toString()
+                    val textLongitude = it.longitude.toString()
+                    Log.v("TAG", textLatitude)
+                    Log.v("TAG", textLongitude)
+                    loginLat = textLatitude
+                    loginLng = textLongitude
+                    val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
+                    val obj = RequestLogInDataModel(
+                        currentDate,
+                        currentTime,
+                        currentUser?.email.toString(),
+                        count,
+                        textLatitude,
+                        textLongitude )
+                    retrofit.requestSendLoginData(obj).enqueue(
+                        object:Callback<ResponseClass>{
+                            override fun onResponse(
+                                call: Call<ResponseClass>,
+                                response: Response<ResponseClass>
+                            ) {
+                                Log.v("TAG", response.body()?.message.toString())
+                            }
+                            override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                                Log.v("TAG", "${t.message}")                    }
+                        }
+                    )
 
-                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                        Log.v("TAG", "${t.message}")                    }
                 }
-            )
+            }
 //            =======================================
-//            if (currentUser != null) {
-//                db.collection("Login/${currentUser.email}/sessions/$currentDate/session")
-//                    .document(count.toString()).set(logInData)
-////                    .addOnSuccessListener { documentReference ->
-////                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-////                    }
-//                    .addOnFailureListener { e ->
-//                        Log.w("TAG", "Error adding document", e)
-//                    }
-//                myRef.child("LoginData").child(currentUser.uid).child("logInTime").setValue(currentTime)
-//                myRef.child("LoginData").child(currentUser.uid).child("email").setValue(currentUser.email.toString())
-//
-//            }
-//            =============
             file.writeText("true")
             isStart = true
             view.findViewById<Button>(R.id.start).isEnabled = false
@@ -175,42 +193,62 @@ class ShareLocFragment : Fragment() {
             val date = Date()
             val currentDate = formatter.format(date)
             val currentTime = timeFormatter.format(date)
-//            val logOutData = hashMapOf(
-//                "logInTime" to logInTime,
-//                "logOutTime" to currentTime,
-//                "email" to currentUser?.email.toString()
-//            )
+
 //            ============== API POST ====================
-            val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
-            val obj = RequestLogoutDataModel(currentDate, logInTime , currentTime, currentUser?.email.toString(), count, "loginLat", "loginLng", "latLngResult", "latLngResult" )
-            retrofit.requestSendLogoutData(obj).enqueue(
-                object:Callback<ResponseClass>{
-                    override fun onResponse(
-                        call: Call<ResponseClass>,
-                        response: Response<ResponseClass>
-                    ) {
-                        Log.v("TAG", response.body()?.message.toString())
-                    }
-                    override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                        Log.v("TAG", "${t.message}")                    }
+            Log.v("TAG", "$loginLng and $ & $loginLat")
+            if (ActivityCompat.checkSelfPermission(
+                    requireActivity().applicationContext,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireActivity().applicationContext,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
+                )
+            }
+//      get Latitude and Longitude
+            val location = fusedLocationProviderClient.lastLocation
+            location.addOnSuccessListener {
+                if (it != null) {
+                    val textLatitude = it.latitude.toString()
+                    val textLongitude = it.longitude.toString()
+                    Log.v("TAG", textLatitude)
+                    Log.v("TAG", textLongitude)
+
+                    val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
+                    val obj = RequestLogoutDataModel(
+                        currentDate,
+                        logInTime ,
+                        currentTime,
+                        currentUser?.email.toString(),
+                        count,
+                        loginLat,
+                        loginLng,
+                        textLatitude,
+                        textLongitude )
+                    retrofit.requestSendLogoutData(obj).enqueue(
+                        object:Callback<ResponseClass>{
+                            override fun onResponse(
+                                call: Call<ResponseClass>,
+                                response: Response<ResponseClass>
+                            ) {
+                                Log.v("TAG", response.body()?.message.toString())
+                            }
+                            override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
+                                Log.v("TAG", "${t.message}")                    }
+                        }
+                    )
+                    count++
+                    countFile.writeText("$count")
                 }
-            )
+            }
 //            =======================================
-//            if (currentUser != null) {
-//                db.collection("Login/${currentUser.email}/sessions/$currentDate/session")
-//                    .document(count.toString()).set(logOutData)
-////                    .addOnSuccessListener { documentReference ->
-////                        Log.d("TAG", "DocumentSnapshot added with ID: ${documentReference.id}")
-////                    }
-//                    .addOnFailureListener { e ->
-//                        Log.w("TAG", "Error adding document", e)
-//                    }
-//                myRef.child("LoginData").child(currentUser.uid).child("logOutTime").setValue(currentTime)
-//
-//            }
-            count++
-            countFile.writeText("$count")
-//            =================
             file.writeText("false")
             isStart = false
             view.findViewById<Button>(R.id.start).isEnabled = true
@@ -235,40 +273,6 @@ class ShareLocFragment : Fragment() {
                 findNavController().popBackStack()
             }
         })
-
         return view
-    }
-
-    private fun getLocation() {
-        var textLatitude:String = ""
-        var textLongitude:String = ""
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity().applicationContext,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(
-                requireActivity().applicationContext,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
-            )
-            return
-        }
-//      get Latitude and Longitude
-        val location = fusedLocationProviderClient.lastLocation
-        location.addOnSuccessListener {
-            if (it != null) {
-                textLatitude = it.latitude.toString()
-                textLongitude = it.longitude.toString()
-                Log.v("TAG", textLatitude)
-                Log.v("TAG", textLongitude)
-                latLngResult = arrayOf(textLatitude, textLongitude)
-            }
-        }
     }
 }
