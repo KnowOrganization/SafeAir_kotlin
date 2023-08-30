@@ -10,7 +10,6 @@ plugins {
 android {
     namespace = "com.knoworganization.safeair_kotlin"
     compileSdk = 33
-
     defaultConfig {
         applicationId = "com.knoworganization.safeair_kotlin"
         minSdk = 24
@@ -20,14 +19,17 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            isDebuggable = false
+        }
+        debug {
+            isDebuggable = true
         }
     }
     compileOptions {
