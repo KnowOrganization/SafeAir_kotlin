@@ -1,16 +1,21 @@
 package com.knoworganization.safeair_kotlin.screens
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -18,7 +23,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.knoworganization.safeair_kotlin.R
 import com.knoworganization.safeair_kotlin.api.APIInterface
@@ -39,7 +43,6 @@ class ShareLocFragment : Fragment() {
     private var isStart: Boolean = false
     private val database = Firebase.database("https://safeair-b0c14-default-rtdb.asia-southeast1.firebasedatabase.app/")
     private val myRef = database.reference
-    private val db = Firebase.firestore
     private lateinit var logInTime: String
     private var count = 0
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -63,6 +66,24 @@ class ShareLocFragment : Fragment() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
         auth = Firebase.auth
         val currentUser = auth.currentUser
+
+        if (checkSelfPermission(requireActivity().applicationContext ,Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            != PackageManager.PERMISSION_GRANTED){
+            val builder = AlertDialog.Builder(requireActivity())
+            builder.setTitle("Allow permissions to SafeAir")
+            builder.setMessage("We request location permission all the time to ensure accurate employee tracking during working hours, enhancing both safety and productivity. \n\n We utilize continuous location permission specifically in our 'Employee Location Tracking' feature, essential for real-time monitoring during working hours. \n\n We offer users the option to start and stop location tracking through a dedicated 'Start/Stop Tracking' button, providing them with control over when their location is actively monitored. \n\n You have already accepted our terms and conditions opening this app for the first time, ensuring you are fully informed and consenting to our continuous location tracking during working hours. \n\n App settings --> Permissions --> Location --> Allow all the time ")
+            builder.setPositiveButton("Yes") { dialog, which ->
+                val intent: Intent = Intent()
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setData(Uri.parse("package:" + requireActivity().applicationContext.packageName));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                startActivity(intent)
+            }
+            builder.show()
+        }
 
         val cacheDir = context?.cacheDir
         val file = File(cacheDir, "true")
