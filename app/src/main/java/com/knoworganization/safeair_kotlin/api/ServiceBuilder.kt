@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
-    var gson = GsonBuilder()
+    private var gson = GsonBuilder()
         .setLenient()
         .create()
 

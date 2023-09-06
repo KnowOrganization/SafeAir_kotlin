@@ -48,7 +48,6 @@ class ShareLocFragment : Fragment() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var loginLat: String
     private lateinit var loginLng: String
-    private lateinit var latLngResult: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,14 +71,14 @@ class ShareLocFragment : Fragment() {
             val builder = AlertDialog.Builder(requireActivity())
             builder.setTitle("Allow permissions to SafeAir")
             builder.setMessage("We request location permission all the time to ensure accurate employee tracking during working hours, enhancing both safety and productivity. \n\n We utilize continuous location permission specifically in our 'Employee Location Tracking' feature, essential for real-time monitoring during working hours. \n\n We offer users the option to start and stop location tracking through a dedicated 'Start/Stop Tracking' button, providing them with control over when their location is actively monitored. \n\n You have already accepted our terms and conditions opening this app for the first time, ensuring you are fully informed and consenting to our continuous location tracking during working hours. \n\n App settings --> Permissions --> Location --> Allow all the time ")
-            builder.setPositiveButton("Yes") { dialog, which ->
-                val intent: Intent = Intent()
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                intent.setData(Uri.parse("package:" + requireActivity().applicationContext.packageName));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            builder.setPositiveButton("Yes") { _, _ ->
+                val intent = Intent()
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.addCategory(Intent.CATEGORY_DEFAULT)
+                intent.setData(Uri.parse("package:" + requireActivity().applicationContext.packageName))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                 startActivity(intent)
             }
             builder.show()
@@ -125,7 +124,7 @@ class ShareLocFragment : Fragment() {
             Log.v("error", "${e.message}")
         }
 
-        view.findViewById<Button>(R.id.start).setOnClickListener(View.OnClickListener {
+        view.findViewById<Button>(R.id.start).setOnClickListener {
             Intent(requireActivity().applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 activity?.startService(this)
@@ -145,18 +144,18 @@ class ShareLocFragment : Fragment() {
 //            ============== API POST ====================
             if (ActivityCompat.checkSelfPermission(
                     requireActivity().applicationContext,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 )
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(
                     requireActivity().applicationContext,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION
                 )
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100
                 )
             }
 //      get Latitude and Longitude
@@ -169,24 +168,27 @@ class ShareLocFragment : Fragment() {
                     Log.v("TAG", textLongitude)
                     loginLat = textLatitude
                     loginLng = textLongitude
-                    val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
+                    val retrofit = ServiceBuilder.buildService(APIInterface::class.java)
                     val obj = RequestLogInDataModel(
                         currentDate,
                         currentTime,
                         currentUser?.email.toString(),
                         count,
                         textLatitude,
-                        textLongitude )
+                        textLongitude
+                    )
                     retrofit.requestSendLoginData(obj).enqueue(
-                        object:Callback<ResponseClass>{
+                        object : Callback<ResponseClass> {
                             override fun onResponse(
                                 call: Call<ResponseClass>,
                                 response: Response<ResponseClass>
                             ) {
                                 Log.v("TAG", response.body()?.message.toString())
                             }
+
                             override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                Log.v("TAG", "${t.message}")                    }
+                                Log.v("TAG", "${t.message}")
+                            }
                         }
                     )
 
@@ -197,15 +199,15 @@ class ShareLocFragment : Fragment() {
             isStart = true
             view.findViewById<Button>(R.id.start).isEnabled = false
             view.findViewById<Button>(R.id.stop).isEnabled = true
-        })
+        }
 
-        view.findViewById<Button>(R.id.stop).setOnClickListener(View.OnClickListener {
+        view.findViewById<Button>(R.id.stop).setOnClickListener {
             Intent(requireActivity().applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_STOP
                 activity?.stopService(this)
             }
             if (currentUser != null) {
-                val data: String = "offline"
+                val data = "offline"
                 myRef.child("locations").child(currentUser.uid).child("status").setValue(data)
             }
 //            Logout data save in database
@@ -219,18 +221,18 @@ class ShareLocFragment : Fragment() {
             Log.v("TAG", "$loginLng and $ & $loginLat")
             if (ActivityCompat.checkSelfPermission(
                     requireActivity().applicationContext,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION
                 )
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(
                     requireActivity().applicationContext,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION
                 )
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100
                 )
             }
 //      get Latitude and Longitude
@@ -242,27 +244,30 @@ class ShareLocFragment : Fragment() {
                     Log.v("TAG", textLatitude)
                     Log.v("TAG", textLongitude)
 
-                    val retrofit= ServiceBuilder.buildService(APIInterface::class.java)
+                    val retrofit = ServiceBuilder.buildService(APIInterface::class.java)
                     val obj = RequestLogoutDataModel(
                         currentDate,
-                        logInTime ,
+                        logInTime,
                         currentTime,
                         currentUser?.email.toString(),
                         count,
                         loginLat,
                         loginLng,
                         textLatitude,
-                        textLongitude )
+                        textLongitude
+                    )
                     retrofit.requestSendLogoutData(obj).enqueue(
-                        object:Callback<ResponseClass>{
+                        object : Callback<ResponseClass> {
                             override fun onResponse(
                                 call: Call<ResponseClass>,
                                 response: Response<ResponseClass>
                             ) {
                                 Log.v("TAG", response.body()?.message.toString())
                             }
+
                             override fun onFailure(call: Call<ResponseClass>, t: Throwable) {
-                                Log.v("TAG", "${t.message}")                    }
+                                Log.v("TAG", "${t.message}")
+                            }
                         }
                     )
                     count++
@@ -275,7 +280,7 @@ class ShareLocFragment : Fragment() {
             view.findViewById<Button>(R.id.start).isEnabled = true
             view.findViewById<Button>(R.id.stop).isEnabled = false
 
-        })
+        }
 
         if (isStart){
             view.findViewById<Button>(R.id.start).isEnabled = false
@@ -285,15 +290,19 @@ class ShareLocFragment : Fragment() {
             view.findViewById<Button>(R.id.stop).isEnabled = false
         }
 
-        view.findViewById<Button>(R.id.logout).setOnClickListener(View.OnClickListener {
-            if (isStart){
-                val toast = Toast.makeText(requireActivity().applicationContext, "Stop the Location first", Toast.LENGTH_SHORT)
+        view.findViewById<Button>(R.id.logout).setOnClickListener {
+            if (isStart) {
+                val toast = Toast.makeText(
+                    requireActivity().applicationContext,
+                    "Stop the Location first",
+                    Toast.LENGTH_SHORT
+                )
                 toast.show()
-            }else{
+            } else {
                 Firebase.auth.signOut()
                 findNavController().popBackStack()
             }
-        })
+        }
         return view
     }
 }

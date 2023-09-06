@@ -10,17 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.knoworganization.safeair_kotlin.R
 import java.io.File
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TermsAndConditionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TermsAndConditionFragment : Fragment() {
-    var agree: String = "false"
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,15 +31,15 @@ class TermsAndConditionFragment : Fragment() {
         }
 
 
-        view.findViewById<Button>(R.id.agree).setOnClickListener(View.OnClickListener {
+        view.findViewById<Button>(R.id.agree).setOnClickListener {
             agreeFile.writeText("true")
             findNavController().navigate(R.id.goToHome)
-        })
+        }
 
-        view.findViewById<Button>(R.id.disagree).setOnClickListener(View.OnClickListener {
-            getActivity()?.moveTaskToBack(true);
-            getActivity()?.finish();
-        })
+        view.findViewById<Button>(R.id.disagree).setOnClickListener {
+            activity?.moveTaskToBack(true)
+            activity?.finish()
+        }
 
         return view
     }

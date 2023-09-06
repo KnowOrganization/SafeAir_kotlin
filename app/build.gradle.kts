@@ -14,7 +14,7 @@ android {
         applicationId = "com.knoworganization.safeair_kotlin"
         minSdk = 24
         targetSdk = 33
-        versionCode = 5
+        versionCode = 6
         versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

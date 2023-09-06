@@ -103,7 +103,7 @@ class LocationService: Service() {
         stopSelf()
         val currentUser = auth.currentUser
         if (currentUser != null){
-            val data: String = "offline"
+            val data = "offline"
             myRef.child("locations").child(currentUser.uid).child("status").setValue(data)
         }
     }
