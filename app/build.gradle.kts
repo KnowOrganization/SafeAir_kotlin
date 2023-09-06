@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id ("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 
 }
 
@@ -13,8 +14,8 @@ android {
         applicationId = "com.knoworganization.safeair_kotlin"
         minSdk = 24
         targetSdk = 33
-        versionCode = 4
-        versionName = "1.2"
+        versionCode = 5
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -73,4 +74,9 @@ dependencies {
     implementation (libs.converter.gson)
 //    Biometric
     implementation (libs.androidx.biometric.ktx)
+//    Crashlytics
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-analytics-ktx")
 }
