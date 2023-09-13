@@ -14,4 +14,5 @@
     <string name="login_with_email">Login with Email</string>
     <string name="login_with_phone">Login with phone</string>
     <string name="otp">OTP</string>
+    <string name="unlock">Unlock</string>
 </resources>

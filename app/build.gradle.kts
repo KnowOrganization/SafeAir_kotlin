@@ -10,24 +10,26 @@ plugins {
 android {
     namespace = "com.knoworganization.safeair_kotlin"
     compileSdk = 33
-
     defaultConfig {
         applicationId = "com.knoworganization.safeair_kotlin"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            isDebuggable = false
+        }
+        debug {
+            isDebuggable = true
         }
     }
     compileOptions {
@@ -36,6 +38,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures{
+        viewBinding= true
     }
 }
 
@@ -58,7 +63,14 @@ dependencies {
     implementation(libs.firebase.database.ktx)
 //    Firebase Auth
     implementation(libs.firebase.auth.ktx)
-//    Chaching
+//    Caching
     implementation (libs.gson)
-
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+//    API calls
+// retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+//    Biometric
+    implementation (libs.androidx.biometric.ktx)
 }
