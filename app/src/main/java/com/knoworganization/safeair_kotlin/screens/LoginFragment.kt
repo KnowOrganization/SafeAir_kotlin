@@ -58,10 +58,9 @@ class LoginFragment : Fragment() {
 
             if (email != "" && password != ""){
                 auth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener() { task ->
+                    .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
-                            val user = auth.currentUser
                             findNavController().navigate(R.id.goToShareLoc)
                             Log.d("signin", "signInWithEmail:success")
                         } else {

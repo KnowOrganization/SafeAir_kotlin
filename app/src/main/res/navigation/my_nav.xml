@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/termsAndConditionFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -51,5 +51,14 @@
         <action
             android:id="@+id/goToShareLocFromPhone"
             app:destination="@id/shareLocFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/termsAndConditionFragment"
+        android:name="com.knoworganization.safeair_kotlin.screens.TermsAndConditionFragment"
+        android:label="fragment_terms_and_condition"
+        tools:layout="@layout/fragment_terms_and_condition" >
+        <action
+            android:id="@+id/goToHome"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

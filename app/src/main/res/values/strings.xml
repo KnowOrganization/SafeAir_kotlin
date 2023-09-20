@@ -15,4 +15,6 @@
     <string name="login_with_phone">Login with phone</string>
     <string name="otp">OTP</string>
     <string name="unlock">Unlock</string>
+    <string name="disagree">Disagree</string>
+    <string name="agree">Agree</string>
 </resources>

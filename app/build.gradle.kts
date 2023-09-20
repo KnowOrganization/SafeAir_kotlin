@@ -1,9 +1,9 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     id ("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 
 }
 
@@ -14,8 +14,8 @@ android {
         applicationId = "com.knoworganization.safeair_kotlin"
         minSdk = 24
         targetSdk = 33
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 8
+        versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
 //    Caching
     implementation (libs.gson)
+    //noinspection UseTomlInstead
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 //    API calls
@@ -73,4 +74,9 @@ dependencies {
     implementation (libs.converter.gson)
 //    Biometric
     implementation (libs.androidx.biometric.ktx)
+//    Crashlytics
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-analytics-ktx")
 }

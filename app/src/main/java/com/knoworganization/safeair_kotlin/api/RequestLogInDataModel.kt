@@ -1,7 +1,5 @@
 package com.knoworganization.safeair_kotlin.api
 
-import java.util.Date
-
 data class RequestLogInDataModel(
     val date: String,
     val logInTime: String,
