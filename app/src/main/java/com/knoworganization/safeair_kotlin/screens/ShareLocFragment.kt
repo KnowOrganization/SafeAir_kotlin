@@ -84,6 +84,7 @@ class ShareLocFragment : Fragment() {
             builder.show()
         }
 
+//        is start chache
         val cacheDir = context?.cacheDir
         val file = File(cacheDir, "true")
         try {
@@ -94,7 +95,7 @@ class ShareLocFragment : Fragment() {
             }
         }catch (_: Exception){
         }
-
+//        session count cache
         val formatter1 = SimpleDateFormat("dd-MMM-yyyy")
         val date1 = Date()
         val currentDate1 = formatter1.format(date1)
@@ -106,6 +107,7 @@ class ShareLocFragment : Fragment() {
         }catch (e: Exception){
             Log.v("error", "${e.message}")
         }
+//        date cache
         val dateFile = File(cacheDir, "date")
         try {
             if (dateFile.length() == 0L){
@@ -123,6 +125,39 @@ class ShareLocFragment : Fragment() {
         }catch (e: Exception){
             Log.v("error", "${e.message}")
         }
+//        longinLat cache
+        val longinLatFile = File(cacheDir, "lat")
+        try {
+            longinLatFile.forEachLine {
+                if (it.length > 3){
+                    loginLat = it
+                }
+            }
+        }catch (e: Exception){
+            Log.v("error", "${e.message}")
+        }
+//        longinLat cache
+        val longinLngFile = File(cacheDir, "lng")
+        try {
+            longinLngFile.forEachLine {
+                if (it.length > 3){
+                    loginLng = it
+                }
+            }
+        }catch (e: Exception){
+            Log.v("error", "${e.message}")
+        }
+//        longinTime cache
+        val longinTimeFile = File(cacheDir, "time")
+        try {
+            longinTimeFile.forEachLine {
+                if (it.length > 3){
+                    logInTime = it
+                }
+            }
+        }catch (e: Exception){
+            Log.v("error", "${e.message}")
+        }
 
         view.findViewById<Button>(R.id.start).setOnClickListener {
             Intent(requireActivity().applicationContext, LocationService::class.java).apply {
@@ -136,11 +171,7 @@ class ShareLocFragment : Fragment() {
             val currentDate = formatter.format(date)
             val currentTime = timeFormatter.format(date)
             logInTime = currentTime
-//            val logInData = hashMapOf(
-//                "logInTime" to currentTime,
-//                "logOutTime" to null,
-//                "email" to currentUser?.email.toString()
-//            )
+
 //            ============== API POST ====================
             if (ActivityCompat.checkSelfPermission(
                     requireActivity().applicationContext,
@@ -168,6 +199,11 @@ class ShareLocFragment : Fragment() {
                     Log.v("TAG", textLongitude)
                     loginLat = textLatitude
                     loginLng = textLongitude
+
+                    longinLatFile.writeText(loginLat)
+                    longinLngFile.writeText(loginLng)
+                    longinTimeFile.writeText(logInTime)
+
                     val retrofit = ServiceBuilder.buildService(APIInterface::class.java)
                     val obj = RequestLogInDataModel(
                         currentDate,
