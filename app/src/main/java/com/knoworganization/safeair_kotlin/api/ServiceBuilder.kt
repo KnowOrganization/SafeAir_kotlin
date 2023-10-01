@@ -14,7 +14,7 @@ object ServiceBuilder {
         .create()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://safeair-backend.onrender.com/")
+        .baseUrl("http://ec2-15-207-107-191.ap-south-1.compute.amazonaws.com/")
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(client)
         .build()
