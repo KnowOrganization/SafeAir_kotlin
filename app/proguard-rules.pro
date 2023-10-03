@@ -26,3 +26,4 @@
 -keep interface com.squareup.okhttp.** { *; }
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
+-keepclassmembers class com.knoworganization.safeair_kotlin.location.** { *; }
