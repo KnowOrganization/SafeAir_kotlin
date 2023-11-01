@@ -14,14 +14,14 @@ android {
         applicationId = "com.knoworganization.safeair_kotlin"
         minSdk = 24
         targetSdk = 33
-        versionCode = 11
-        versionName = "1.8"
+        versionCode = 12
+        versionName = "1.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
